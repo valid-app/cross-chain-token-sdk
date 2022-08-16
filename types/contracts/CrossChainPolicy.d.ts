@@ -1,4 +1,10 @@
 import { IWallet, Contract, TransactionReceipt, BigNumber, Event } from "@ijstech/eth-wallet";
+export interface IOnTransferParams {
+    param1: string;
+    param2: string;
+    amount: number | BigNumber;
+    param4: string;
+}
 export declare class CrossChainPolicy extends Contract {
     constructor(wallet: IWallet, address?: string);
     deploy(maximumPerDay: number | BigNumber): Promise<string>;
@@ -12,69 +18,51 @@ export declare class CrossChainPolicy extends Contract {
     decodeStartOwnershipTransferEvent(event: Event): CrossChainPolicy.StartOwnershipTransferEvent;
     parseTransferOwnershipEvent(receipt: TransactionReceipt): CrossChainPolicy.TransferOwnershipEvent[];
     decodeTransferOwnershipEvent(event: Event): CrossChainPolicy.TransferOwnershipEvent;
-    addExtraAllowance_send(amount: number | BigNumber): Promise<TransactionReceipt>;
-    addExtraAllowance_call(amount: number | BigNumber): Promise<void>;
     addExtraAllowance: {
         (amount: number | BigNumber): Promise<TransactionReceipt>;
         call: (amount: number | BigNumber) => Promise<void>;
     };
-    deny_send(user: string): Promise<TransactionReceipt>;
-    deny_call(user: string): Promise<void>;
     deny: {
         (user: string): Promise<TransactionReceipt>;
         call: (user: string) => Promise<void>;
     };
-    extraAllowance(): Promise<BigNumber>;
-    isPermitted(param1: string): Promise<BigNumber>;
-    maximumPerDay(): Promise<BigNumber>;
-    newOwner(): Promise<string>;
-    onTransfer_send(params: {
-        param1: string;
-        param2: string;
-        amount: number | BigNumber;
-        param4: string;
-    }): Promise<TransactionReceipt>;
-    onTransfer_call(params: {
-        param1: string;
-        param2: string;
-        amount: number | BigNumber;
-        param4: string;
-    }): Promise<void>;
-    onTransfer: {
-        (params: {
-            param1: string;
-            param2: string;
-            amount: number | BigNumber;
-            param4: string;
-        }): Promise<TransactionReceipt>;
-        call: (params: {
-            param1: string;
-            param2: string;
-            amount: number | BigNumber;
-            param4: string;
-        }) => Promise<void>;
+    extraAllowance: {
+        (): Promise<BigNumber>;
     };
-    owner(): Promise<string>;
-    permit_send(user: string): Promise<TransactionReceipt>;
-    permit_call(user: string): Promise<void>;
+    isPermitted: {
+        (param1: string): Promise<BigNumber>;
+    };
+    maximumPerDay: {
+        (): Promise<BigNumber>;
+    };
+    newOwner: {
+        (): Promise<string>;
+    };
+    onTransfer: {
+        (params: IOnTransferParams): Promise<TransactionReceipt>;
+        call: (params: IOnTransferParams) => Promise<void>;
+    };
+    owner: {
+        (): Promise<string>;
+    };
     permit: {
         (user: string): Promise<TransactionReceipt>;
         call: (user: string) => Promise<void>;
     };
-    remainingAllowance(): Promise<BigNumber>;
-    takeOwnership_send(): Promise<TransactionReceipt>;
-    takeOwnership_call(): Promise<void>;
+    remainingAllowance: {
+        (): Promise<BigNumber>;
+    };
     takeOwnership: {
         (): Promise<TransactionReceipt>;
         call: () => Promise<void>;
     };
-    transferOwnership_send(newOwner: string): Promise<TransactionReceipt>;
-    transferOwnership_call(newOwner: string): Promise<void>;
     transferOwnership: {
         (newOwner: string): Promise<TransactionReceipt>;
         call: (newOwner: string) => Promise<void>;
     };
-    transferredToday(): Promise<BigNumber>;
+    transferredToday: {
+        (): Promise<BigNumber>;
+    };
     private assign;
 }
 export declare module CrossChainPolicy {

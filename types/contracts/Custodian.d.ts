@@ -1,4 +1,38 @@
 import { IWallet, Contract, TransactionReceipt, BigNumber, Event } from "@ijstech/eth-wallet";
+export interface IAllowTokenParams {
+    token: string;
+    allow: boolean;
+}
+export interface ILockParams {
+    token: string;
+    amount: number | BigNumber;
+}
+export interface ILockedParams {
+    param1: number | BigNumber;
+    param2: string;
+    param3: string;
+}
+export interface IRefundParams {
+    txHash: string;
+    transferIndex: number | BigNumber;
+    token: string;
+    destination: string;
+    amount: number | BigNumber;
+    extraData: string;
+}
+export interface IRefundedParams {
+    param1: string;
+    param2: number | BigNumber;
+}
+export interface ITransferETHParams {
+    destination: string;
+    amount: number | BigNumber;
+}
+export interface ITransferTokenParams {
+    token: string;
+    destination: string;
+    amount: number | BigNumber;
+}
 export declare class Custodian extends Contract {
     constructor(wallet: IWallet, address?: string);
     deploy(): Promise<string>;
@@ -24,179 +58,84 @@ export declare class Custodian extends Contract {
     decodeTransferOwnershipEvent(event: Event): Custodian.TransferOwnershipEvent;
     parseUnpausedEvent(receipt: TransactionReceipt): Custodian.UnpausedEvent[];
     decodeUnpausedEvent(event: Event): Custodian.UnpausedEvent;
-    allowToken_send(params: {
-        token: string;
-        allow: boolean;
-    }): Promise<TransactionReceipt>;
-    allowToken_call(params: {
-        token: string;
-        allow: boolean;
-    }): Promise<void>;
     allowToken: {
-        (params: {
-            token: string;
-            allow: boolean;
-        }): Promise<TransactionReceipt>;
-        call: (params: {
-            token: string;
-            allow: boolean;
-        }) => Promise<void>;
+        (params: IAllowTokenParams): Promise<TransactionReceipt>;
+        call: (params: IAllowTokenParams) => Promise<void>;
     };
-    allowedTokens(param1: string): Promise<boolean>;
-    crossChainPolicy(): Promise<string>;
-    deny_send(user: string): Promise<TransactionReceipt>;
-    deny_call(user: string): Promise<void>;
+    allowedTokens: {
+        (param1: string): Promise<boolean>;
+    };
+    crossChainPolicy: {
+        (): Promise<string>;
+    };
     deny: {
         (user: string): Promise<TransactionReceipt>;
         call: (user: string) => Promise<void>;
     };
-    isPermitted(param1: string): Promise<BigNumber>;
-    lock_send(params: {
-        token: string;
-        amount: number | BigNumber;
-    }): Promise<TransactionReceipt>;
-    lock_call(params: {
-        token: string;
-        amount: number | BigNumber;
-    }): Promise<void>;
-    lock: {
-        (params: {
-            token: string;
-            amount: number | BigNumber;
-        }): Promise<TransactionReceipt>;
-        call: (params: {
-            token: string;
-            amount: number | BigNumber;
-        }) => Promise<void>;
+    isPermitted: {
+        (param1: string): Promise<BigNumber>;
     };
-    locked(params: {
-        param1: number | BigNumber;
-        param2: string;
-        param3: string;
-    }): Promise<BigNumber>;
-    newOwner(): Promise<string>;
-    newRound_send(): Promise<TransactionReceipt>;
-    newRound_call(): Promise<void>;
+    lock: {
+        (params: ILockParams): Promise<TransactionReceipt>;
+        call: (params: ILockParams) => Promise<void>;
+    };
+    locked: {
+        (params: ILockedParams): Promise<BigNumber>;
+    };
+    newOwner: {
+        (): Promise<string>;
+    };
     newRound: {
         (): Promise<TransactionReceipt>;
         call: () => Promise<void>;
     };
-    owner(): Promise<string>;
-    pause_send(): Promise<TransactionReceipt>;
-    pause_call(): Promise<void>;
+    owner: {
+        (): Promise<string>;
+    };
     pause: {
         (): Promise<TransactionReceipt>;
         call: () => Promise<void>;
     };
-    paused(): Promise<boolean>;
-    permit_send(user: string): Promise<TransactionReceipt>;
-    permit_call(user: string): Promise<void>;
+    paused: {
+        (): Promise<boolean>;
+    };
     permit: {
         (user: string): Promise<TransactionReceipt>;
         call: (user: string) => Promise<void>;
     };
-    refund_send(params: {
-        txHash: string;
-        transferIndex: number | BigNumber;
-        token: string;
-        destination: string;
-        amount: number | BigNumber;
-        extraData: string;
-    }): Promise<TransactionReceipt>;
-    refund_call(params: {
-        txHash: string;
-        transferIndex: number | BigNumber;
-        token: string;
-        destination: string;
-        amount: number | BigNumber;
-        extraData: string;
-    }): Promise<void>;
     refund: {
-        (params: {
-            txHash: string;
-            transferIndex: number | BigNumber;
-            token: string;
-            destination: string;
-            amount: number | BigNumber;
-            extraData: string;
-        }): Promise<TransactionReceipt>;
-        call: (params: {
-            txHash: string;
-            transferIndex: number | BigNumber;
-            token: string;
-            destination: string;
-            amount: number | BigNumber;
-            extraData: string;
-        }) => Promise<void>;
+        (params: IRefundParams): Promise<TransactionReceipt>;
+        call: (params: IRefundParams) => Promise<void>;
     };
-    refunded(params: {
-        param1: string;
-        param2: number | BigNumber;
-    }): Promise<boolean>;
-    resume_send(): Promise<TransactionReceipt>;
-    resume_call(): Promise<void>;
+    refunded: {
+        (params: IRefundedParams): Promise<boolean>;
+    };
     resume: {
         (): Promise<TransactionReceipt>;
         call: () => Promise<void>;
     };
-    round(): Promise<BigNumber>;
-    setCrossChainPolicy_send(crossChainPolicy: string): Promise<TransactionReceipt>;
-    setCrossChainPolicy_call(crossChainPolicy: string): Promise<void>;
+    round: {
+        (): Promise<BigNumber>;
+    };
     setCrossChainPolicy: {
         (crossChainPolicy: string): Promise<TransactionReceipt>;
         call: (crossChainPolicy: string) => Promise<void>;
     };
-    takeOwnership_send(): Promise<TransactionReceipt>;
-    takeOwnership_call(): Promise<void>;
     takeOwnership: {
         (): Promise<TransactionReceipt>;
         call: () => Promise<void>;
     };
-    transferETH_send(params: {
-        destination: string;
-        amount: number | BigNumber;
-    }): Promise<TransactionReceipt>;
-    transferETH_call(params: {
-        destination: string;
-        amount: number | BigNumber;
-    }): Promise<void>;
     transferETH: {
-        (params: {
-            destination: string;
-            amount: number | BigNumber;
-        }): Promise<TransactionReceipt>;
-        call: (params: {
-            destination: string;
-            amount: number | BigNumber;
-        }) => Promise<void>;
+        (params: ITransferETHParams): Promise<TransactionReceipt>;
+        call: (params: ITransferETHParams) => Promise<void>;
     };
-    transferOwnership_send(newOwner: string): Promise<TransactionReceipt>;
-    transferOwnership_call(newOwner: string): Promise<void>;
     transferOwnership: {
         (newOwner: string): Promise<TransactionReceipt>;
         call: (newOwner: string) => Promise<void>;
     };
-    transferToken_send(params: {
-        token: string;
-        destination: string;
-        amount: number | BigNumber;
-    }): Promise<TransactionReceipt>;
-    transferToken_call(params: {
-        token: string;
-        destination: string;
-        amount: number | BigNumber;
-    }): Promise<void>;
     transferToken: {
-        (params: {
-            token: string;
-            destination: string;
-            amount: number | BigNumber;
-        }): Promise<TransactionReceipt>;
-        call: (params: {
-            token: string;
-            destination: string;
-            amount: number | BigNumber;
-        }) => Promise<void>;
+        (params: ITransferTokenParams): Promise<TransactionReceipt>;
+        call: (params: ITransferTokenParams) => Promise<void>;
     };
     private assign;
 }

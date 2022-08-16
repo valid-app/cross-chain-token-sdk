@@ -1,4 +1,4 @@
-define('@ijstech/cross-chain-token-sdk', (require, exports)=>{
+define('@validapp/cross-chain-token-sdk', (require, exports)=>{
 var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -96,76 +96,98 @@ var ERC20 = class extends import_eth_wallet.Contract {
       _event: event
     };
   }
-  async allowance(params) {
-    let result = await this.call("allowance", [params.owner, params.spender]);
-    return new import_eth_wallet.BigNumber(result);
-  }
-  async approve_send(params) {
-    let result = await this.send("approve", [params.spender, import_eth_wallet.Utils.toString(params.amount)]);
-    return result;
-  }
-  async approve_call(params) {
-    let result = await this.call("approve", [params.spender, import_eth_wallet.Utils.toString(params.amount)]);
-    return result;
-  }
-  async balanceOf(account) {
-    let result = await this.call("balanceOf", [account]);
-    return new import_eth_wallet.BigNumber(result);
-  }
-  async decimals() {
-    let result = await this.call("decimals");
-    return new import_eth_wallet.BigNumber(result);
-  }
-  async decreaseAllowance_send(params) {
-    let result = await this.send("decreaseAllowance", [params.spender, import_eth_wallet.Utils.toString(params.subtractedValue)]);
-    return result;
-  }
-  async decreaseAllowance_call(params) {
-    let result = await this.call("decreaseAllowance", [params.spender, import_eth_wallet.Utils.toString(params.subtractedValue)]);
-    return result;
-  }
-  async increaseAllowance_send(params) {
-    let result = await this.send("increaseAllowance", [params.spender, import_eth_wallet.Utils.toString(params.addedValue)]);
-    return result;
-  }
-  async increaseAllowance_call(params) {
-    let result = await this.call("increaseAllowance", [params.spender, import_eth_wallet.Utils.toString(params.addedValue)]);
-    return result;
-  }
-  async name() {
-    let result = await this.call("name");
-    return result;
-  }
-  async symbol() {
-    let result = await this.call("symbol");
-    return result;
-  }
-  async totalSupply() {
-    let result = await this.call("totalSupply");
-    return new import_eth_wallet.BigNumber(result);
-  }
-  async transfer_send(params) {
-    let result = await this.send("transfer", [params.recipient, import_eth_wallet.Utils.toString(params.amount)]);
-    return result;
-  }
-  async transfer_call(params) {
-    let result = await this.call("transfer", [params.recipient, import_eth_wallet.Utils.toString(params.amount)]);
-    return result;
-  }
-  async transferFrom_send(params) {
-    let result = await this.send("transferFrom", [params.sender, params.recipient, import_eth_wallet.Utils.toString(params.amount)]);
-    return result;
-  }
-  async transferFrom_call(params) {
-    let result = await this.call("transferFrom", [params.sender, params.recipient, import_eth_wallet.Utils.toString(params.amount)]);
-    return result;
-  }
   assign() {
-    this.approve = Object.assign(this.approve_send, { call: this.approve_call });
-    this.decreaseAllowance = Object.assign(this.decreaseAllowance_send, { call: this.decreaseAllowance_call });
-    this.increaseAllowance = Object.assign(this.increaseAllowance_send, { call: this.increaseAllowance_call });
-    this.transfer = Object.assign(this.transfer_send, { call: this.transfer_call });
-    this.transferFrom = Object.assign(this.transferFrom_send, { call: this.transferFrom_call });
+    let allowanceParams = (params) => [params.owner, params.spender];
+    let allowance_call = async (params) => {
+      let result = await this.call("allowance", allowanceParams(params));
+      return new import_eth_wallet.BigNumber(result);
+    };
+    this.allowance = allowance_call;
+    let balanceOf_call = async (account) => {
+      let result = await this.call("balanceOf", [account]);
+      return new import_eth_wallet.BigNumber(result);
+    };
+    this.balanceOf = balanceOf_call;
+    let decimals_call = async () => {
+      let result = await this.call("decimals");
+      return new import_eth_wallet.BigNumber(result);
+    };
+    this.decimals = decimals_call;
+    let name_call = async () => {
+      let result = await this.call("name");
+      return result;
+    };
+    this.name = name_call;
+    let symbol_call = async () => {
+      let result = await this.call("symbol");
+      return result;
+    };
+    this.symbol = symbol_call;
+    let totalSupply_call = async () => {
+      let result = await this.call("totalSupply");
+      return new import_eth_wallet.BigNumber(result);
+    };
+    this.totalSupply = totalSupply_call;
+    let approveParams = (params) => [params.spender, import_eth_wallet.Utils.toString(params.amount)];
+    let approve_send = async (params) => {
+      let result = await this.send("approve", approveParams(params));
+      return result;
+    };
+    let approve_call = async (params) => {
+      let result = await this.call("approve", approveParams(params));
+      return result;
+    };
+    this.approve = Object.assign(approve_send, {
+      call: approve_call
+    });
+    let decreaseAllowanceParams = (params) => [params.spender, import_eth_wallet.Utils.toString(params.subtractedValue)];
+    let decreaseAllowance_send = async (params) => {
+      let result = await this.send("decreaseAllowance", decreaseAllowanceParams(params));
+      return result;
+    };
+    let decreaseAllowance_call = async (params) => {
+      let result = await this.call("decreaseAllowance", decreaseAllowanceParams(params));
+      return result;
+    };
+    this.decreaseAllowance = Object.assign(decreaseAllowance_send, {
+      call: decreaseAllowance_call
+    });
+    let increaseAllowanceParams = (params) => [params.spender, import_eth_wallet.Utils.toString(params.addedValue)];
+    let increaseAllowance_send = async (params) => {
+      let result = await this.send("increaseAllowance", increaseAllowanceParams(params));
+      return result;
+    };
+    let increaseAllowance_call = async (params) => {
+      let result = await this.call("increaseAllowance", increaseAllowanceParams(params));
+      return result;
+    };
+    this.increaseAllowance = Object.assign(increaseAllowance_send, {
+      call: increaseAllowance_call
+    });
+    let transferParams = (params) => [params.recipient, import_eth_wallet.Utils.toString(params.amount)];
+    let transfer_send = async (params) => {
+      let result = await this.send("transfer", transferParams(params));
+      return result;
+    };
+    let transfer_call = async (params) => {
+      let result = await this.call("transfer", transferParams(params));
+      return result;
+    };
+    this.transfer = Object.assign(transfer_send, {
+      call: transfer_call
+    });
+    let transferFromParams = (params) => [params.sender, params.recipient, import_eth_wallet.Utils.toString(params.amount)];
+    let transferFrom_send = async (params) => {
+      let result = await this.send("transferFrom", transferFromParams(params));
+      return result;
+    };
+    let transferFrom_call = async (params) => {
+      let result = await this.call("transferFrom", transferFromParams(params));
+      return result;
+    };
+    this.transferFrom = Object.assign(transferFrom_send, {
+      call: transferFrom_call
+    });
   }
 };
 
@@ -240,55 +262,66 @@ var Authorization = class extends import_eth_wallet2.Contract {
       _event: event
     };
   }
-  async deny_send(user) {
-    let result = await this.send("deny", [user]);
-    return result;
-  }
-  async deny_call(user) {
-    let result = await this.call("deny", [user]);
-    return;
-  }
-  async isPermitted(param1) {
-    let result = await this.call("isPermitted", [param1]);
-    return new import_eth_wallet2.BigNumber(result);
-  }
-  async newOwner() {
-    let result = await this.call("newOwner");
-    return result;
-  }
-  async owner() {
-    let result = await this.call("owner");
-    return result;
-  }
-  async permit_send(user) {
-    let result = await this.send("permit", [user]);
-    return result;
-  }
-  async permit_call(user) {
-    let result = await this.call("permit", [user]);
-    return;
-  }
-  async takeOwnership_send() {
-    let result = await this.send("takeOwnership");
-    return result;
-  }
-  async takeOwnership_call() {
-    let result = await this.call("takeOwnership");
-    return;
-  }
-  async transferOwnership_send(newOwner) {
-    let result = await this.send("transferOwnership", [newOwner]);
-    return result;
-  }
-  async transferOwnership_call(newOwner) {
-    let result = await this.call("transferOwnership", [newOwner]);
-    return;
-  }
   assign() {
-    this.deny = Object.assign(this.deny_send, { call: this.deny_call });
-    this.permit = Object.assign(this.permit_send, { call: this.permit_call });
-    this.takeOwnership = Object.assign(this.takeOwnership_send, { call: this.takeOwnership_call });
-    this.transferOwnership = Object.assign(this.transferOwnership_send, { call: this.transferOwnership_call });
+    let isPermitted_call = async (param1) => {
+      let result = await this.call("isPermitted", [param1]);
+      return new import_eth_wallet2.BigNumber(result);
+    };
+    this.isPermitted = isPermitted_call;
+    let newOwner_call = async () => {
+      let result = await this.call("newOwner");
+      return result;
+    };
+    this.newOwner = newOwner_call;
+    let owner_call = async () => {
+      let result = await this.call("owner");
+      return result;
+    };
+    this.owner = owner_call;
+    let deny_send = async (user) => {
+      let result = await this.send("deny", [user]);
+      return result;
+    };
+    let deny_call = async (user) => {
+      let result = await this.call("deny", [user]);
+      return;
+    };
+    this.deny = Object.assign(deny_send, {
+      call: deny_call
+    });
+    let permit_send = async (user) => {
+      let result = await this.send("permit", [user]);
+      return result;
+    };
+    let permit_call = async (user) => {
+      let result = await this.call("permit", [user]);
+      return;
+    };
+    this.permit = Object.assign(permit_send, {
+      call: permit_call
+    });
+    let takeOwnership_send = async () => {
+      let result = await this.send("takeOwnership");
+      return result;
+    };
+    let takeOwnership_call = async () => {
+      let result = await this.call("takeOwnership");
+      return;
+    };
+    this.takeOwnership = Object.assign(takeOwnership_send, {
+      call: takeOwnership_call
+    });
+    let transferOwnership_send = async (newOwner) => {
+      let result = await this.send("transferOwnership", [newOwner]);
+      return result;
+    };
+    let transferOwnership_call = async (newOwner) => {
+      let result = await this.call("transferOwnership", [newOwner]);
+      return;
+    };
+    this.transferOwnership = Object.assign(transferOwnership_send, {
+      call: transferOwnership_call
+    });
   }
 };
 
@@ -382,89 +415,109 @@ var CrossChainPolicy = class extends import_eth_wallet3.Contract {
       _event: event
     };
   }
-  async addExtraAllowance_send(amount) {
-    let result = await this.send("addExtraAllowance", [import_eth_wallet3.Utils.toString(amount)]);
-    return result;
-  }
-  async addExtraAllowance_call(amount) {
-    let result = await this.call("addExtraAllowance", [import_eth_wallet3.Utils.toString(amount)]);
-    return;
-  }
-  async deny_send(user) {
-    let result = await this.send("deny", [user]);
-    return result;
-  }
-  async deny_call(user) {
-    let result = await this.call("deny", [user]);
-    return;
-  }
-  async extraAllowance() {
-    let result = await this.call("extraAllowance");
-    return new import_eth_wallet3.BigNumber(result);
-  }
-  async isPermitted(param1) {
-    let result = await this.call("isPermitted", [param1]);
-    return new import_eth_wallet3.BigNumber(result);
-  }
-  async maximumPerDay() {
-    let result = await this.call("maximumPerDay");
-    return new import_eth_wallet3.BigNumber(result);
-  }
-  async newOwner() {
-    let result = await this.call("newOwner");
-    return result;
-  }
-  async onTransfer_send(params) {
-    let result = await this.send("onTransfer", [params.param1, params.param2, import_eth_wallet3.Utils.toString(params.amount), import_eth_wallet3.Utils.stringToBytes(params.param4)]);
-    return result;
-  }
-  async onTransfer_call(params) {
-    let result = await this.call("onTransfer", [params.param1, params.param2, import_eth_wallet3.Utils.toString(params.amount), import_eth_wallet3.Utils.stringToBytes(params.param4)]);
-    return;
-  }
-  async owner() {
-    let result = await this.call("owner");
-    return result;
-  }
-  async permit_send(user) {
-    let result = await this.send("permit", [user]);
-    return result;
-  }
-  async permit_call(user) {
-    let result = await this.call("permit", [user]);
-    return;
-  }
-  async remainingAllowance() {
-    let result = await this.call("remainingAllowance");
-    return new import_eth_wallet3.BigNumber(result);
-  }
-  async takeOwnership_send() {
-    let result = await this.send("takeOwnership");
-    return result;
-  }
-  async takeOwnership_call() {
-    let result = await this.call("takeOwnership");
-    return;
-  }
-  async transferOwnership_send(newOwner) {
-    let result = await this.send("transferOwnership", [newOwner]);
-    return result;
-  }
-  async transferOwnership_call(newOwner) {
-    let result = await this.call("transferOwnership", [newOwner]);
-    return;
-  }
-  async transferredToday() {
-    let result = await this.call("transferredToday");
-    return new import_eth_wallet3.BigNumber(result);
-  }
   assign() {
-    this.addExtraAllowance = Object.assign(this.addExtraAllowance_send, { call: this.addExtraAllowance_call });
-    this.deny = Object.assign(this.deny_send, { call: this.deny_call });
-    this.onTransfer = Object.assign(this.onTransfer_send, { call: this.onTransfer_call });
-    this.permit = Object.assign(this.permit_send, { call: this.permit_call });
-    this.takeOwnership = Object.assign(this.takeOwnership_send, { call: this.takeOwnership_call });
-    this.transferOwnership = Object.assign(this.transferOwnership_send, { call: this.transferOwnership_call });
+    let extraAllowance_call = async () => {
+      let result = await this.call("extraAllowance");
+      return new import_eth_wallet3.BigNumber(result);
+    };
+    this.extraAllowance = extraAllowance_call;
+    let isPermitted_call = async (param1) => {
+      let result = await this.call("isPermitted", [param1]);
+      return new import_eth_wallet3.BigNumber(result);
+    };
+    this.isPermitted = isPermitted_call;
+    let maximumPerDay_call = async () => {
+      let result = await this.call("maximumPerDay");
+      return new import_eth_wallet3.BigNumber(result);
+    };
+    this.maximumPerDay = maximumPerDay_call;
+    let newOwner_call = async () => {
+      let result = await this.call("newOwner");
+      return result;
+    };
+    this.newOwner = newOwner_call;
+    let owner_call = async () => {
+      let result = await this.call("owner");
+      return result;
+    };
+    this.owner = owner_call;
+    let remainingAllowance_call = async () => {
+      let result = await this.call("remainingAllowance");
+      return new import_eth_wallet3.BigNumber(result);
+    };
+    this.remainingAllowance = remainingAllowance_call;
+    let transferredToday_call = async () => {
+      let result = await this.call("transferredToday");
+      return new import_eth_wallet3.BigNumber(result);
+    };
+    this.transferredToday = transferredToday_call;
+    let addExtraAllowance_send = async (amount) => {
+      let result = await this.send("addExtraAllowance", [import_eth_wallet3.Utils.toString(amount)]);
+      return result;
+    };
+    let addExtraAllowance_call = async (amount) => {
+      let result = await this.call("addExtraAllowance", [import_eth_wallet3.Utils.toString(amount)]);
+      return;
+    };
+    this.addExtraAllowance = Object.assign(addExtraAllowance_send, {
+      call: addExtraAllowance_call
+    });
+    let deny_send = async (user) => {
+      let result = await this.send("deny", [user]);
+      return result;
+    };
+    let deny_call = async (user) => {
+      let result = await this.call("deny", [user]);
+      return;
+    };
+    this.deny = Object.assign(deny_send, {
+      call: deny_call
+    });
+    let onTransferParams = (params) => [params.param1, params.param2, import_eth_wallet3.Utils.toString(params.amount), import_eth_wallet3.Utils.stringToBytes(params.param4)];
+    let onTransfer_send = async (params) => {
+      let result = await this.send("onTransfer", onTransferParams(params));
+      return result;
+    };
+    let onTransfer_call = async (params) => {
+      let result = await this.call("onTransfer", onTransferParams(params));
+      return;
+    };
+    this.onTransfer = Object.assign(onTransfer_send, {
+      call: onTransfer_call
+    });
+    let permit_send = async (user) => {
+      let result = await this.send("permit", [user]);
+      return result;
+    };
+    let permit_call = async (user) => {
+      let result = await this.call("permit", [user]);
+      return;
+    };
+    this.permit = Object.assign(permit_send, {
+      call: permit_call
+    });
+    let takeOwnership_send = async () => {
+      let result = await this.send("takeOwnership");
+      return result;
+    };
+    let takeOwnership_call = async () => {
+      let result = await this.call("takeOwnership");
+      return;
+    };
+    this.takeOwnership = Object.assign(takeOwnership_send, {
+      call: takeOwnership_call
+    });
+    let transferOwnership_send = async (newOwner) => {
+      let result = await this.send("transferOwnership", [newOwner]);
+      return result;
+    };
+    let transferOwnership_call = async (newOwner) => {
+      let result = await this.call("transferOwnership", [newOwner]);
+      return;
+    };
+    this.transferOwnership = Object.assign(transferOwnership_send, {
+      call: transferOwnership_call
+    });
   }
 };
 
@@ -639,160 +692,202 @@ var Custodian = class extends import_eth_wallet4.Contract {
       _event: event
     };
   }
-  async allowToken_send(params) {
-    let result = await this.send("allowToken", [params.token, params.allow]);
-    return result;
-  }
-  async allowToken_call(params) {
-    let result = await this.call("allowToken", [params.token, params.allow]);
-    return;
-  }
-  async allowedTokens(param1) {
-    let result = await this.call("allowedTokens", [param1]);
-    return result;
-  }
-  async crossChainPolicy() {
-    let result = await this.call("crossChainPolicy");
-    return result;
-  }
-  async deny_send(user) {
-    let result = await this.send("deny", [user]);
-    return result;
-  }
-  async deny_call(user) {
-    let result = await this.call("deny", [user]);
-    return;
-  }
-  async isPermitted(param1) {
-    let result = await this.call("isPermitted", [param1]);
-    return new import_eth_wallet4.BigNumber(result);
-  }
-  async lock_send(params) {
-    let result = await this.send("lock", [params.token, import_eth_wallet4.Utils.toString(params.amount)]);
-    return result;
-  }
-  async lock_call(params) {
-    let result = await this.call("lock", [params.token, import_eth_wallet4.Utils.toString(params.amount)]);
-    return;
-  }
-  async locked(params) {
-    let result = await this.call("locked", [import_eth_wallet4.Utils.toString(params.param1), params.param2, params.param3]);
-    return new import_eth_wallet4.BigNumber(result);
-  }
-  async newOwner() {
-    let result = await this.call("newOwner");
-    return result;
-  }
-  async newRound_send() {
-    let result = await this.send("newRound");
-    return result;
-  }
-  async newRound_call() {
-    let result = await this.call("newRound");
-    return;
-  }
-  async owner() {
-    let result = await this.call("owner");
-    return result;
-  }
-  async pause_send() {
-    let result = await this.send("pause");
-    return result;
-  }
-  async pause_call() {
-    let result = await this.call("pause");
-    return;
-  }
-  async paused() {
-    let result = await this.call("paused");
-    return result;
-  }
-  async permit_send(user) {
-    let result = await this.send("permit", [user]);
-    return result;
-  }
-  async permit_call(user) {
-    let result = await this.call("permit", [user]);
-    return;
-  }
-  async refund_send(params) {
-    let result = await this.send("refund", [import_eth_wallet4.Utils.stringToBytes32(params.txHash), import_eth_wallet4.Utils.toString(params.transferIndex), params.token, params.destination, import_eth_wallet4.Utils.toString(params.amount), import_eth_wallet4.Utils.stringToBytes(params.extraData)]);
-    return result;
-  }
-  async refund_call(params) {
-    let result = await this.call("refund", [import_eth_wallet4.Utils.stringToBytes32(params.txHash), import_eth_wallet4.Utils.toString(params.transferIndex), params.token, params.destination, import_eth_wallet4.Utils.toString(params.amount), import_eth_wallet4.Utils.stringToBytes(params.extraData)]);
-    return;
-  }
-  async refunded(params) {
-    let result = await this.call("refunded", [import_eth_wallet4.Utils.stringToBytes32(params.param1), import_eth_wallet4.Utils.toString(params.param2)]);
-    return result;
-  }
-  async resume_send() {
-    let result = await this.send("resume");
-    return result;
-  }
-  async resume_call() {
-    let result = await this.call("resume");
-    return;
-  }
-  async round() {
-    let result = await this.call("round");
-    return new import_eth_wallet4.BigNumber(result);
-  }
-  async setCrossChainPolicy_send(crossChainPolicy) {
-    let result = await this.send("setCrossChainPolicy", [crossChainPolicy]);
-    return result;
-  }
-  async setCrossChainPolicy_call(crossChainPolicy) {
-    let result = await this.call("setCrossChainPolicy", [crossChainPolicy]);
-    return;
-  }
-  async takeOwnership_send() {
-    let result = await this.send("takeOwnership");
-    return result;
-  }
-  async takeOwnership_call() {
-    let result = await this.call("takeOwnership");
-    return;
-  }
-  async transferETH_send(params) {
-    let result = await this.send("transferETH", [params.destination, import_eth_wallet4.Utils.toString(params.amount)]);
-    return result;
-  }
-  async transferETH_call(params) {
-    let result = await this.call("transferETH", [params.destination, import_eth_wallet4.Utils.toString(params.amount)]);
-    return;
-  }
-  async transferOwnership_send(newOwner) {
-    let result = await this.send("transferOwnership", [newOwner]);
-    return result;
-  }
-  async transferOwnership_call(newOwner) {
-    let result = await this.call("transferOwnership", [newOwner]);
-    return;
-  }
-  async transferToken_send(params) {
-    let result = await this.send("transferToken", [params.token, params.destination, import_eth_wallet4.Utils.toString(params.amount)]);
-    return result;
-  }
-  async transferToken_call(params) {
-    let result = await this.call("transferToken", [params.token, params.destination, import_eth_wallet4.Utils.toString(params.amount)]);
-    return;
-  }
   assign() {
-    this.allowToken = Object.assign(this.allowToken_send, { call: this.allowToken_call });
-    this.deny = Object.assign(this.deny_send, { call: this.deny_call });
-    this.lock = Object.assign(this.lock_send, { call: this.lock_call });
-    this.newRound = Object.assign(this.newRound_send, { call: this.newRound_call });
-    this.pause = Object.assign(this.pause_send, { call: this.pause_call });
-    this.permit = Object.assign(this.permit_send, { call: this.permit_call });
-    this.refund = Object.assign(this.refund_send, { call: this.refund_call });
-    this.resume = Object.assign(this.resume_send, { call: this.resume_call });
-    this.setCrossChainPolicy = Object.assign(this.setCrossChainPolicy_send, { call: this.setCrossChainPolicy_call });
-    this.takeOwnership = Object.assign(this.takeOwnership_send, { call: this.takeOwnership_call });
-    this.transferETH = Object.assign(this.transferETH_send, { call: this.transferETH_call });
-    this.transferOwnership = Object.assign(this.transferOwnership_send, { call: this.transferOwnership_call });
-    this.transferToken = Object.assign(this.transferToken_send, { call: this.transferToken_call });
+    let allowedTokens_call = async (param1) => {
+      let result = await this.call("allowedTokens", [param1]);
+      return result;
+    };
+    this.allowedTokens = allowedTokens_call;
+    let crossChainPolicy_call = async () => {
+      let result = await this.call("crossChainPolicy");
+      return result;
+    };
+    this.crossChainPolicy = crossChainPolicy_call;
+    let isPermitted_call = async (param1) => {
+      let result = await this.call("isPermitted", [param1]);
+      return new import_eth_wallet4.BigNumber(result);
+    };
+    this.isPermitted = isPermitted_call;
+    let lockedParams = (params) => [import_eth_wallet4.Utils.toString(params.param1), params.param2, params.param3];
+    let locked_call = async (params) => {
+      let result = await this.call("locked", lockedParams(params));
+      return new import_eth_wallet4.BigNumber(result);
+    };
+    this.locked = locked_call;
+    let newOwner_call = async () => {
+      let result = await this.call("newOwner");
+      return result;
+    };
+    this.newOwner = newOwner_call;
+    let owner_call = async () => {
+      let result = await this.call("owner");
+      return result;
+    };
+    this.owner = owner_call;
+    let paused_call = async () => {
+      let result = await this.call("paused");
+      return result;
+    };
+    this.paused = paused_call;
+    let refundedParams = (params) => [import_eth_wallet4.Utils.stringToBytes32(params.param1), import_eth_wallet4.Utils.toString(params.param2)];
+    let refunded_call = async (params) => {
+      let result = await this.call("refunded", refundedParams(params));
+      return result;
+    };
+    this.refunded = refunded_call;
+    let round_call = async () => {
+      let result = await this.call("round");
+      return new import_eth_wallet4.BigNumber(result);
+    };
+    this.round = round_call;
+    let allowTokenParams = (params) => [params.token, params.allow];
+    let allowToken_send = async (params) => {
+      let result = await this.send("allowToken", allowTokenParams(params));
+      return result;
+    };
+    let allowToken_call = async (params) => {
+      let result = await this.call("allowToken", allowTokenParams(params));
+      return;
+    };
+    this.allowToken = Object.assign(allowToken_send, {
+      call: allowToken_call
+    });
+    let deny_send = async (user) => {
+      let result = await this.send("deny", [user]);
+      return result;
+    };
+    let deny_call = async (user) => {
+      let result = await this.call("deny", [user]);
+      return;
+    };
+    this.deny = Object.assign(deny_send, {
+      call: deny_call
+    });
+    let lockParams = (params) => [params.token, import_eth_wallet4.Utils.toString(params.amount)];
+    let lock_send = async (params) => {
+      let result = await this.send("lock", lockParams(params));
+      return result;
+    };
+    let lock_call = async (params) => {
+      let result = await this.call("lock", lockParams(params));
+      return;
+    };
+    this.lock = Object.assign(lock_send, {
+      call: lock_call
+    });
+    let newRound_send = async () => {
+      let result = await this.send("newRound");
+      return result;
+    };
+    let newRound_call = async () => {
+      let result = await this.call("newRound");
+      return;
+    };
+    this.newRound = Object.assign(newRound_send, {
+      call: newRound_call
+    });
+    let pause_send = async () => {
+      let result = await this.send("pause");
+      return result;
+    };
+    let pause_call = async () => {
+      let result = await this.call("pause");
+      return;
+    };
+    this.pause = Object.assign(pause_send, {
+      call: pause_call
+    });
+    let permit_send = async (user) => {
+      let result = await this.send("permit", [user]);
+      return result;
+    };
+    let permit_call = async (user) => {
+      let result = await this.call("permit", [user]);
+      return;
+    };
+    this.permit = Object.assign(permit_send, {
+      call: permit_call
+    });
+    let refundParams = (params) => [import_eth_wallet4.Utils.stringToBytes32(params.txHash), import_eth_wallet4.Utils.toString(params.transferIndex), params.token, params.destination, import_eth_wallet4.Utils.toString(params.amount), import_eth_wallet4.Utils.stringToBytes(params.extraData)];
+    let refund_send = async (params) => {
+      let result = await this.send("refund", refundParams(params));
+      return result;
+    };
+    let refund_call = async (params) => {
+      let result = await this.call("refund", refundParams(params));
+      return;
+    };
+    this.refund = Object.assign(refund_send, {
+      call: refund_call
+    });
+    let resume_send = async () => {
+      let result = await this.send("resume");
+      return result;
+    };
+    let resume_call = async () => {
+      let result = await this.call("resume");
+      return;
+    };
+    this.resume = Object.assign(resume_send, {
+      call: resume_call
+    });
+    let setCrossChainPolicy_send = async (crossChainPolicy) => {
+      let result = await this.send("setCrossChainPolicy", [crossChainPolicy]);
+      return result;
+    };
+    let setCrossChainPolicy_call = async (crossChainPolicy) => {
+      let result = await this.call("setCrossChainPolicy", [crossChainPolicy]);
+      return;
+    };
+    this.setCrossChainPolicy = Object.assign(setCrossChainPolicy_send, {
+      call: setCrossChainPolicy_call
+    });
+    let takeOwnership_send = async () => {
+      let result = await this.send("takeOwnership");
+      return result;
+    };
+    let takeOwnership_call = async () => {
+      let result = await this.call("takeOwnership");
+      return;
+    };
+    this.takeOwnership = Object.assign(takeOwnership_send, {
+      call: takeOwnership_call
+    });
+    let transferETHParams = (params) => [params.destination, import_eth_wallet4.Utils.toString(params.amount)];
+    let transferETH_send = async (params) => {
+      let result = await this.send("transferETH", transferETHParams(params));
+      return result;
+    };
+    let transferETH_call = async (params) => {
+      let result = await this.call("transferETH", transferETHParams(params));
+      return;
+    };
+    this.transferETH = Object.assign(transferETH_send, {
+      call: transferETH_call
+    });
+    let transferOwnership_send = async (newOwner) => {
+      let result = await this.send("transferOwnership", [newOwner]);
+      return result;
+    };
+    let transferOwnership_call = async (newOwner) => {
+      let result = await this.call("transferOwnership", [newOwner]);
+      return;
+    };
+    this.transferOwnership = Object.assign(transferOwnership_send, {
+      call: transferOwnership_call
+    });
+    let transferTokenParams = (params) => [params.token, params.destination, import_eth_wallet4.Utils.toString(params.amount)];
+    let transferToken_send = async (params) => {
+      let result = await this.send("transferToken", transferTokenParams(params));
+      return result;
+    };
+    let transferToken_call = async (params) => {
+      let result = await this.call("transferToken", transferTokenParams(params));
+      return;
+    };
+    this.transferToken = Object.assign(transferToken_send, {
+      call: transferToken_call
+    });
   }
 };
 
@@ -933,116 +1028,144 @@ var Minter = class extends import_eth_wallet5.Contract {
       _event: event
     };
   }
-  async burn_send(params) {
-    let result = await this.send("burn", [import_eth_wallet5.Utils.stringToBytes32(params.txHash), params.token, import_eth_wallet5.Utils.toString(params.amount)]);
-    return result;
-  }
-  async burn_call(params) {
-    let result = await this.call("burn", [import_eth_wallet5.Utils.stringToBytes32(params.txHash), params.token, import_eth_wallet5.Utils.toString(params.amount)]);
-    return;
-  }
-  async burned(param1) {
-    let result = await this.call("burned", [import_eth_wallet5.Utils.stringToBytes32(param1)]);
-    return result;
-  }
-  async crossChainPolicy() {
-    let result = await this.call("crossChainPolicy");
-    return result;
-  }
-  async deny_send(user) {
-    let result = await this.send("deny", [user]);
-    return result;
-  }
-  async deny_call(user) {
-    let result = await this.call("deny", [user]);
-    return;
-  }
-  async isPermitted(param1) {
-    let result = await this.call("isPermitted", [param1]);
-    return new import_eth_wallet5.BigNumber(result);
-  }
-  async mint_send(params) {
-    let result = await this.send("mint", [import_eth_wallet5.Utils.stringToBytes32(params.txHash), import_eth_wallet5.Utils.toString(params.transferIndex), params.token, params.destination, import_eth_wallet5.Utils.toString(params.amount), import_eth_wallet5.Utils.stringToBytes(params.extraData)]);
-    return result;
-  }
-  async mint_call(params) {
-    let result = await this.call("mint", [import_eth_wallet5.Utils.stringToBytes32(params.txHash), import_eth_wallet5.Utils.toString(params.transferIndex), params.token, params.destination, import_eth_wallet5.Utils.toString(params.amount), import_eth_wallet5.Utils.stringToBytes(params.extraData)]);
-    return;
-  }
-  async minted(params) {
-    let result = await this.call("minted", [import_eth_wallet5.Utils.stringToBytes32(params.param1), import_eth_wallet5.Utils.toString(params.param2)]);
-    return result;
-  }
-  async newOwner() {
-    let result = await this.call("newOwner");
-    return result;
-  }
-  async owner() {
-    let result = await this.call("owner");
-    return result;
-  }
-  async pause_send() {
-    let result = await this.send("pause");
-    return result;
-  }
-  async pause_call() {
-    let result = await this.call("pause");
-    return;
-  }
-  async paused() {
-    let result = await this.call("paused");
-    return result;
-  }
-  async permit_send(user) {
-    let result = await this.send("permit", [user]);
-    return result;
-  }
-  async permit_call(user) {
-    let result = await this.call("permit", [user]);
-    return;
-  }
-  async resume_send() {
-    let result = await this.send("resume");
-    return result;
-  }
-  async resume_call() {
-    let result = await this.call("resume");
-    return;
-  }
-  async setCrossChainPolicy_send(crossChainPolicy) {
-    let result = await this.send("setCrossChainPolicy", [crossChainPolicy]);
-    return result;
-  }
-  async setCrossChainPolicy_call(crossChainPolicy) {
-    let result = await this.call("setCrossChainPolicy", [crossChainPolicy]);
-    return;
-  }
-  async takeOwnership_send() {
-    let result = await this.send("takeOwnership");
-    return result;
-  }
-  async takeOwnership_call() {
-    let result = await this.call("takeOwnership");
-    return;
-  }
-  async transferOwnership_send(newOwner) {
-    let result = await this.send("transferOwnership", [newOwner]);
-    return result;
-  }
-  async transferOwnership_call(newOwner) {
-    let result = await this.call("transferOwnership", [newOwner]);
-    return;
-  }
   assign() {
-    this.burn = Object.assign(this.burn_send, { call: this.burn_call });
-    this.deny = Object.assign(this.deny_send, { call: this.deny_call });
-    this.mint = Object.assign(this.mint_send, { call: this.mint_call });
-    this.pause = Object.assign(this.pause_send, { call: this.pause_call });
-    this.permit = Object.assign(this.permit_send, { call: this.permit_call });
-    this.resume = Object.assign(this.resume_send, { call: this.resume_call });
-    this.setCrossChainPolicy = Object.assign(this.setCrossChainPolicy_send, { call: this.setCrossChainPolicy_call });
-    this.takeOwnership = Object.assign(this.takeOwnership_send, { call: this.takeOwnership_call });
-    this.transferOwnership = Object.assign(this.transferOwnership_send, { call: this.transferOwnership_call });
+    let burned_call = async (param1) => {
+      let result = await this.call("burned", [import_eth_wallet5.Utils.stringToBytes32(param1)]);
+      return result;
+    };
+    this.burned = burned_call;
+    let crossChainPolicy_call = async () => {
+      let result = await this.call("crossChainPolicy");
+      return result;
+    };
+    this.crossChainPolicy = crossChainPolicy_call;
+    let isPermitted_call = async (param1) => {
+      let result = await this.call("isPermitted", [param1]);
+      return new import_eth_wallet5.BigNumber(result);
+    };
+    this.isPermitted = isPermitted_call;
+    let mintedParams = (params) => [import_eth_wallet5.Utils.stringToBytes32(params.param1), import_eth_wallet5.Utils.toString(params.param2)];
+    let minted_call = async (params) => {
+      let result = await this.call("minted", mintedParams(params));
+      return result;
+    };
+    this.minted = minted_call;
+    let newOwner_call = async () => {
+      let result = await this.call("newOwner");
+      return result;
+    };
+    this.newOwner = newOwner_call;
+    let owner_call = async () => {
+      let result = await this.call("owner");
+      return result;
+    };
+    this.owner = owner_call;
+    let paused_call = async () => {
+      let result = await this.call("paused");
+      return result;
+    };
+    this.paused = paused_call;
+    let burnParams = (params) => [import_eth_wallet5.Utils.stringToBytes32(params.txHash), params.token, import_eth_wallet5.Utils.toString(params.amount)];
+    let burn_send = async (params) => {
+      let result = await this.send("burn", burnParams(params));
+      return result;
+    };
+    let burn_call = async (params) => {
+      let result = await this.call("burn", burnParams(params));
+      return;
+    };
+    this.burn = Object.assign(burn_send, {
+      call: burn_call
+    });
+    let deny_send = async (user) => {
+      let result = await this.send("deny", [user]);
+      return result;
+    };
+    let deny_call = async (user) => {
+      let result = await this.call("deny", [user]);
+      return;
+    };
+    this.deny = Object.assign(deny_send, {
+      call: deny_call
+    });
+    let mintParams = (params) => [import_eth_wallet5.Utils.stringToBytes32(params.txHash), import_eth_wallet5.Utils.toString(params.transferIndex), params.token, params.destination, import_eth_wallet5.Utils.toString(params.amount), import_eth_wallet5.Utils.stringToBytes(params.extraData)];
+    let mint_send = async (params) => {
+      let result = await this.send("mint", mintParams(params));
+      return result;
+    };
+    let mint_call = async (params) => {
+      let result = await this.call("mint", mintParams(params));
+      return;
+    };
+    this.mint = Object.assign(mint_send, {
+      call: mint_call
+    });
+    let pause_send = async () => {
+      let result = await this.send("pause");
+      return result;
+    };
+    let pause_call = async () => {
+      let result = await this.call("pause");
+      return;
+    };
+    this.pause = Object.assign(pause_send, {
+      call: pause_call
+    });
+    let permit_send = async (user) => {
+      let result = await this.send("permit", [user]);
+      return result;
+    };
+    let permit_call = async (user) => {
+      let result = await this.call("permit", [user]);
+      return;
+    };
+    this.permit = Object.assign(permit_send, {
+      call: permit_call
+    });
+    let resume_send = async () => {
+      let result = await this.send("resume");
+      return result;
+    };
+    let resume_call = async () => {
+      let result = await this.call("resume");
+      return;
+    };
+    this.resume = Object.assign(resume_send, {
+      call: resume_call
+    });
+    let setCrossChainPolicy_send = async (crossChainPolicy) => {
+      let result = await this.send("setCrossChainPolicy", [crossChainPolicy]);
+      return result;
+    };
+    let setCrossChainPolicy_call = async (crossChainPolicy) => {
+      let result = await this.call("setCrossChainPolicy", [crossChainPolicy]);
+      return;
+    };
+    this.setCrossChainPolicy = Object.assign(setCrossChainPolicy_send, {
+      call: setCrossChainPolicy_call
+    });
+    let takeOwnership_send = async () => {
+      let result = await this.send("takeOwnership");
+      return result;
+    };
+    let takeOwnership_call = async () => {
+      let result = await this.call("takeOwnership");
+      return;
+    };
+    this.takeOwnership = Object.assign(takeOwnership_send, {
+      call: takeOwnership_call
+    });
+    let transferOwnership_send = async (newOwner) => {
+      let result = await this.send("transferOwnership", [newOwner]);
+      return result;
+    };
+    let transferOwnership_call = async (newOwner) => {
+      let result = await this.call("transferOwnership", [newOwner]);
+      return;
+    };
+    this.transferOwnership = Object.assign(transferOwnership_send, {
+      call: transferOwnership_call
+    });
   }
 };
 
@@ -1157,151 +1280,192 @@ var Token = class extends import_eth_wallet6.Contract {
       _event: event
     };
   }
-  async allowance(params) {
-    let result = await this.call("allowance", [params.owner, params.spender]);
-    return new import_eth_wallet6.BigNumber(result);
-  }
-  async approve_send(params) {
-    let result = await this.send("approve", [params.spender, import_eth_wallet6.Utils.toString(params.amount)]);
-    return result;
-  }
-  async approve_call(params) {
-    let result = await this.call("approve", [params.spender, import_eth_wallet6.Utils.toString(params.amount)]);
-    return result;
-  }
-  async balanceOf(account) {
-    let result = await this.call("balanceOf", [account]);
-    return new import_eth_wallet6.BigNumber(result);
-  }
-  async burn_send(amount) {
-    let result = await this.send("burn", [import_eth_wallet6.Utils.toString(amount)]);
-    return result;
-  }
-  async burn_call(amount) {
-    let result = await this.call("burn", [import_eth_wallet6.Utils.toString(amount)]);
-    return;
-  }
-  async burnFrom_send(params) {
-    let result = await this.send("burnFrom", [params.account, import_eth_wallet6.Utils.toString(params.amount)]);
-    return result;
-  }
-  async burnFrom_call(params) {
-    let result = await this.call("burnFrom", [params.account, import_eth_wallet6.Utils.toString(params.amount)]);
-    return;
-  }
-  async decimals() {
-    let result = await this.call("decimals");
-    return new import_eth_wallet6.BigNumber(result);
-  }
-  async decreaseAllowance_send(params) {
-    let result = await this.send("decreaseAllowance", [params.spender, import_eth_wallet6.Utils.toString(params.subtractedValue)]);
-    return result;
-  }
-  async decreaseAllowance_call(params) {
-    let result = await this.call("decreaseAllowance", [params.spender, import_eth_wallet6.Utils.toString(params.subtractedValue)]);
-    return result;
-  }
-  async deny_send(user) {
-    let result = await this.send("deny", [user]);
-    return result;
-  }
-  async deny_call(user) {
-    let result = await this.call("deny", [user]);
-    return;
-  }
-  async increaseAllowance_send(params) {
-    let result = await this.send("increaseAllowance", [params.spender, import_eth_wallet6.Utils.toString(params.addedValue)]);
-    return result;
-  }
-  async increaseAllowance_call(params) {
-    let result = await this.call("increaseAllowance", [params.spender, import_eth_wallet6.Utils.toString(params.addedValue)]);
-    return result;
-  }
-  async isPermitted(param1) {
-    let result = await this.call("isPermitted", [param1]);
-    return new import_eth_wallet6.BigNumber(result);
-  }
-  async mint_send(params) {
-    let result = await this.send("mint", [params.account, import_eth_wallet6.Utils.toString(params.amount)]);
-    return result;
-  }
-  async mint_call(params) {
-    let result = await this.call("mint", [params.account, import_eth_wallet6.Utils.toString(params.amount)]);
-    return result;
-  }
-  async name() {
-    let result = await this.call("name");
-    return result;
-  }
-  async newOwner() {
-    let result = await this.call("newOwner");
-    return result;
-  }
-  async owner() {
-    let result = await this.call("owner");
-    return result;
-  }
-  async permit_send(user) {
-    let result = await this.send("permit", [user]);
-    return result;
-  }
-  async permit_call(user) {
-    let result = await this.call("permit", [user]);
-    return;
-  }
-  async symbol() {
-    let result = await this.call("symbol");
-    return result;
-  }
-  async takeOwnership_send() {
-    let result = await this.send("takeOwnership");
-    return result;
-  }
-  async takeOwnership_call() {
-    let result = await this.call("takeOwnership");
-    return;
-  }
-  async totalSupply() {
-    let result = await this.call("totalSupply");
-    return new import_eth_wallet6.BigNumber(result);
-  }
-  async transfer_send(params) {
-    let result = await this.send("transfer", [params.recipient, import_eth_wallet6.Utils.toString(params.amount)]);
-    return result;
-  }
-  async transfer_call(params) {
-    let result = await this.call("transfer", [params.recipient, import_eth_wallet6.Utils.toString(params.amount)]);
-    return result;
-  }
-  async transferFrom_send(params) {
-    let result = await this.send("transferFrom", [params.sender, params.recipient, import_eth_wallet6.Utils.toString(params.amount)]);
-    return result;
-  }
-  async transferFrom_call(params) {
-    let result = await this.call("transferFrom", [params.sender, params.recipient, import_eth_wallet6.Utils.toString(params.amount)]);
-    return result;
-  }
-  async transferOwnership_send(newOwner) {
-    let result = await this.send("transferOwnership", [newOwner]);
-    return result;
-  }
-  async transferOwnership_call(newOwner) {
-    let result = await this.call("transferOwnership", [newOwner]);
-    return;
-  }
   assign() {
-    this.approve = Object.assign(this.approve_send, { call: this.approve_call });
-    this.burn = Object.assign(this.burn_send, { call: this.burn_call });
-    this.burnFrom = Object.assign(this.burnFrom_send, { call: this.burnFrom_call });
-    this.decreaseAllowance = Object.assign(this.decreaseAllowance_send, { call: this.decreaseAllowance_call });
-    this.deny = Object.assign(this.deny_send, { call: this.deny_call });
-    this.increaseAllowance = Object.assign(this.increaseAllowance_send, { call: this.increaseAllowance_call });
-    this.mint = Object.assign(this.mint_send, { call: this.mint_call });
-    this.permit = Object.assign(this.permit_send, { call: this.permit_call });
-    this.takeOwnership = Object.assign(this.takeOwnership_send, { call: this.takeOwnership_call });
-    this.transfer = Object.assign(this.transfer_send, { call: this.transfer_call });
-    this.transferFrom = Object.assign(this.transferFrom_send, { call: this.transferFrom_call });
-    this.transferOwnership = Object.assign(this.transferOwnership_send, { call: this.transferOwnership_call });
+    let allowanceParams = (params) => [params.owner, params.spender];
+    let allowance_call = async (params) => {
+      let result = await this.call("allowance", allowanceParams(params));
+      return new import_eth_wallet6.BigNumber(result);
+    };
+    this.allowance = allowance_call;
+    let balanceOf_call = async (account) => {
+      let result = await this.call("balanceOf", [account]);
+      return new import_eth_wallet6.BigNumber(result);
+    };
+    this.balanceOf = balanceOf_call;
+    let decimals_call = async () => {
+      let result = await this.call("decimals");
+      return new import_eth_wallet6.BigNumber(result);
+    };
+    this.decimals = decimals_call;
+    let isPermitted_call = async (param1) => {
+      let result = await this.call("isPermitted", [param1]);
+      return new import_eth_wallet6.BigNumber(result);
+    };
+    this.isPermitted = isPermitted_call;
+    let name_call = async () => {
+      let result = await this.call("name");
+      return result;
+    };
+    this.name = name_call;
+    let newOwner_call = async () => {
+      let result = await this.call("newOwner");
+      return result;
+    };
+    this.newOwner = newOwner_call;
+    let owner_call = async () => {
+      let result = await this.call("owner");
+      return result;
+    };
+    this.owner = owner_call;
+    let symbol_call = async () => {
+      let result = await this.call("symbol");
+      return result;
+    };
+    this.symbol = symbol_call;
+    let totalSupply_call = async () => {
+      let result = await this.call("totalSupply");
+      return new import_eth_wallet6.BigNumber(result);
+    };
+    this.totalSupply = totalSupply_call;
+    let approveParams = (params) => [params.spender, import_eth_wallet6.Utils.toString(params.amount)];
+    let approve_send = async (params) => {
+      let result = await this.send("approve", approveParams(params));
+      return result;
+    };
+    let approve_call = async (params) => {
+      let result = await this.call("approve", approveParams(params));
+      return result;
+    };
+    this.approve = Object.assign(approve_send, {
+      call: approve_call
+    });
+    let burn_send = async (amount) => {
+      let result = await this.send("burn", [import_eth_wallet6.Utils.toString(amount)]);
+      return result;
+    };
+    let burn_call = async (amount) => {
+      let result = await this.call("burn", [import_eth_wallet6.Utils.toString(amount)]);
+      return;
+    };
+    this.burn = Object.assign(burn_send, {
+      call: burn_call
+    });
+    let burnFromParams = (params) => [params.account, import_eth_wallet6.Utils.toString(params.amount)];
+    let burnFrom_send = async (params) => {
+      let result = await this.send("burnFrom", burnFromParams(params));
+      return result;
+    };
+    let burnFrom_call = async (params) => {
+      let result = await this.call("burnFrom", burnFromParams(params));
+      return;
+    };
+    this.burnFrom = Object.assign(burnFrom_send, {
+      call: burnFrom_call
+    });
+    let decreaseAllowanceParams = (params) => [params.spender, import_eth_wallet6.Utils.toString(params.subtractedValue)];
+    let decreaseAllowance_send = async (params) => {
+      let result = await this.send("decreaseAllowance", decreaseAllowanceParams(params));
+      return result;
+    };
+    let decreaseAllowance_call = async (params) => {
+      let result = await this.call("decreaseAllowance", decreaseAllowanceParams(params));
+      return result;
+    };
+    this.decreaseAllowance = Object.assign(decreaseAllowance_send, {
+      call: decreaseAllowance_call
+    });
+    let deny_send = async (user) => {
+      let result = await this.send("deny", [user]);
+      return result;
+    };
+    let deny_call = async (user) => {
+      let result = await this.call("deny", [user]);
+      return;
+    };
+    this.deny = Object.assign(deny_send, {
+      call: deny_call
+    });
+    let increaseAllowanceParams = (params) => [params.spender, import_eth_wallet6.Utils.toString(params.addedValue)];
+    let increaseAllowance_send = async (params) => {
+      let result = await this.send("increaseAllowance", increaseAllowanceParams(params));
+      return result;
+    };
+    let increaseAllowance_call = async (params) => {
+      let result = await this.call("increaseAllowance", increaseAllowanceParams(params));
+      return result;
+    };
+    this.increaseAllowance = Object.assign(increaseAllowance_send, {
+      call: increaseAllowance_call
+    });
+    let mintParams = (params) => [params.account, import_eth_wallet6.Utils.toString(params.amount)];
+    let mint_send = async (params) => {
+      let result = await this.send("mint", mintParams(params));
+      return result;
+    };
+    let mint_call = async (params) => {
+      let result = await this.call("mint", mintParams(params));
+      return result;
+    };
+    this.mint = Object.assign(mint_send, {
+      call: mint_call
+    });
+    let permit_send = async (user) => {
+      let result = await this.send("permit", [user]);
+      return result;
+    };
+    let permit_call = async (user) => {
+      let result = await this.call("permit", [user]);
+      return;
+    };
+    this.permit = Object.assign(permit_send, {
+      call: permit_call
+    });
+    let takeOwnership_send = async () => {
+      let result = await this.send("takeOwnership");
+      return result;
+    };
+    let takeOwnership_call = async () => {
+      let result = await this.call("takeOwnership");
+      return;
+    };
+    this.takeOwnership = Object.assign(takeOwnership_send, {
+      call: takeOwnership_call
+    });
+    let transferParams = (params) => [params.recipient, import_eth_wallet6.Utils.toString(params.amount)];
+    let transfer_send = async (params) => {
+      let result = await this.send("transfer", transferParams(params));
+      return result;
+    };
+    let transfer_call = async (params) => {
+      let result = await this.call("transfer", transferParams(params));
+      return result;
+    };
+    this.transfer = Object.assign(transfer_send, {
+      call: transfer_call
+    });
+    let transferFromParams = (params) => [params.sender, params.recipient, import_eth_wallet6.Utils.toString(params.amount)];
+    let transferFrom_send = async (params) => {
+      let result = await this.send("transferFrom", transferFromParams(params));
+      return result;
+    };
+    let transferFrom_call = async (params) => {
+      let result = await this.call("transferFrom", transferFromParams(params));
+      return result;
+    };
+    this.transferFrom = Object.assign(transferFrom_send, {
+      call: transferFrom_call
+    });
+    let transferOwnership_send = async (newOwner) => {
+      let result = await this.send("transferOwnership", [newOwner]);
+      return result;
+    };
+    let transferOwnership_call = async (newOwner) => {
+      let result = await this.call("transferOwnership", [newOwner]);
+      return;
+    };
+    this.transferOwnership = Object.assign(transferOwnership_send, {
+      call: transferOwnership_call
+    });
   }
 };
 

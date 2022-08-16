@@ -10,29 +10,27 @@ export declare class Authorization extends Contract {
     decodeStartOwnershipTransferEvent(event: Event): Authorization.StartOwnershipTransferEvent;
     parseTransferOwnershipEvent(receipt: TransactionReceipt): Authorization.TransferOwnershipEvent[];
     decodeTransferOwnershipEvent(event: Event): Authorization.TransferOwnershipEvent;
-    deny_send(user: string): Promise<TransactionReceipt>;
-    deny_call(user: string): Promise<void>;
     deny: {
         (user: string): Promise<TransactionReceipt>;
         call: (user: string) => Promise<void>;
     };
-    isPermitted(param1: string): Promise<BigNumber>;
-    newOwner(): Promise<string>;
-    owner(): Promise<string>;
-    permit_send(user: string): Promise<TransactionReceipt>;
-    permit_call(user: string): Promise<void>;
+    isPermitted: {
+        (param1: string): Promise<BigNumber>;
+    };
+    newOwner: {
+        (): Promise<string>;
+    };
+    owner: {
+        (): Promise<string>;
+    };
     permit: {
         (user: string): Promise<TransactionReceipt>;
         call: (user: string) => Promise<void>;
     };
-    takeOwnership_send(): Promise<TransactionReceipt>;
-    takeOwnership_call(): Promise<void>;
     takeOwnership: {
         (): Promise<TransactionReceipt>;
         call: () => Promise<void>;
     };
-    transferOwnership_send(newOwner: string): Promise<TransactionReceipt>;
-    transferOwnership_call(newOwner: string): Promise<void>;
     transferOwnership: {
         (newOwner: string): Promise<TransactionReceipt>;
         call: (newOwner: string) => Promise<void>;

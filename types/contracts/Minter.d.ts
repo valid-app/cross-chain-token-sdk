@@ -1,4 +1,21 @@
 import { IWallet, Contract, TransactionReceipt, BigNumber, Event } from "@ijstech/eth-wallet";
+export interface IBurnParams {
+    txHash: string;
+    token: string;
+    amount: number | BigNumber;
+}
+export interface IMintParams {
+    txHash: string;
+    transferIndex: number | BigNumber;
+    token: string;
+    destination: string;
+    amount: number | BigNumber;
+    extraData: string;
+}
+export interface IMintedParams {
+    param1: string;
+    param2: number | BigNumber;
+}
 export declare class Minter extends Contract {
     constructor(wallet: IWallet, address?: string);
     deploy(): Promise<string>;
@@ -20,110 +37,59 @@ export declare class Minter extends Contract {
     decodeTransferOwnershipEvent(event: Event): Minter.TransferOwnershipEvent;
     parseUnpausedEvent(receipt: TransactionReceipt): Minter.UnpausedEvent[];
     decodeUnpausedEvent(event: Event): Minter.UnpausedEvent;
-    burn_send(params: {
-        txHash: string;
-        token: string;
-        amount: number | BigNumber;
-    }): Promise<TransactionReceipt>;
-    burn_call(params: {
-        txHash: string;
-        token: string;
-        amount: number | BigNumber;
-    }): Promise<void>;
     burn: {
-        (params: {
-            txHash: string;
-            token: string;
-            amount: number | BigNumber;
-        }): Promise<TransactionReceipt>;
-        call: (params: {
-            txHash: string;
-            token: string;
-            amount: number | BigNumber;
-        }) => Promise<void>;
+        (params: IBurnParams): Promise<TransactionReceipt>;
+        call: (params: IBurnParams) => Promise<void>;
     };
-    burned(param1: string): Promise<boolean>;
-    crossChainPolicy(): Promise<string>;
-    deny_send(user: string): Promise<TransactionReceipt>;
-    deny_call(user: string): Promise<void>;
+    burned: {
+        (param1: string): Promise<boolean>;
+    };
+    crossChainPolicy: {
+        (): Promise<string>;
+    };
     deny: {
         (user: string): Promise<TransactionReceipt>;
         call: (user: string) => Promise<void>;
     };
-    isPermitted(param1: string): Promise<BigNumber>;
-    mint_send(params: {
-        txHash: string;
-        transferIndex: number | BigNumber;
-        token: string;
-        destination: string;
-        amount: number | BigNumber;
-        extraData: string;
-    }): Promise<TransactionReceipt>;
-    mint_call(params: {
-        txHash: string;
-        transferIndex: number | BigNumber;
-        token: string;
-        destination: string;
-        amount: number | BigNumber;
-        extraData: string;
-    }): Promise<void>;
-    mint: {
-        (params: {
-            txHash: string;
-            transferIndex: number | BigNumber;
-            token: string;
-            destination: string;
-            amount: number | BigNumber;
-            extraData: string;
-        }): Promise<TransactionReceipt>;
-        call: (params: {
-            txHash: string;
-            transferIndex: number | BigNumber;
-            token: string;
-            destination: string;
-            amount: number | BigNumber;
-            extraData: string;
-        }) => Promise<void>;
+    isPermitted: {
+        (param1: string): Promise<BigNumber>;
     };
-    minted(params: {
-        param1: string;
-        param2: number | BigNumber;
-    }): Promise<boolean>;
-    newOwner(): Promise<string>;
-    owner(): Promise<string>;
-    pause_send(): Promise<TransactionReceipt>;
-    pause_call(): Promise<void>;
+    mint: {
+        (params: IMintParams): Promise<TransactionReceipt>;
+        call: (params: IMintParams) => Promise<void>;
+    };
+    minted: {
+        (params: IMintedParams): Promise<boolean>;
+    };
+    newOwner: {
+        (): Promise<string>;
+    };
+    owner: {
+        (): Promise<string>;
+    };
     pause: {
         (): Promise<TransactionReceipt>;
         call: () => Promise<void>;
     };
-    paused(): Promise<boolean>;
-    permit_send(user: string): Promise<TransactionReceipt>;
-    permit_call(user: string): Promise<void>;
+    paused: {
+        (): Promise<boolean>;
+    };
     permit: {
         (user: string): Promise<TransactionReceipt>;
         call: (user: string) => Promise<void>;
     };
-    resume_send(): Promise<TransactionReceipt>;
-    resume_call(): Promise<void>;
     resume: {
         (): Promise<TransactionReceipt>;
         call: () => Promise<void>;
     };
-    setCrossChainPolicy_send(crossChainPolicy: string): Promise<TransactionReceipt>;
-    setCrossChainPolicy_call(crossChainPolicy: string): Promise<void>;
     setCrossChainPolicy: {
         (crossChainPolicy: string): Promise<TransactionReceipt>;
         call: (crossChainPolicy: string) => Promise<void>;
     };
-    takeOwnership_send(): Promise<TransactionReceipt>;
-    takeOwnership_call(): Promise<void>;
     takeOwnership: {
         (): Promise<TransactionReceipt>;
         call: () => Promise<void>;
     };
-    transferOwnership_send(newOwner: string): Promise<TransactionReceipt>;
-    transferOwnership_call(newOwner: string): Promise<void>;
     transferOwnership: {
         (newOwner: string): Promise<TransactionReceipt>;
         call: (newOwner: string) => Promise<void>;
